@@ -1,0 +1,4 @@
+# Export settings for TensorRT INT8 (requires calibration data)
+imgsz: 640
+int8: true
+fraction: 0.1

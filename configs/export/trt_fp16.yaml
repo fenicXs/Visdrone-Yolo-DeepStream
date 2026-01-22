@@ -1,0 +1,4 @@
+# Export settings for TensorRT FP16 (half precision)
+imgsz: 640
+half: true
+dynamic: true

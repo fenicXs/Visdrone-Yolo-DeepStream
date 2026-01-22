@@ -1,0 +1,5 @@
+# Export settings for ONNX
+imgsz: 640
+opset: 12
+dynamic: true
+simplify: true

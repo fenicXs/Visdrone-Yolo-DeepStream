@@ -1,0 +1,5 @@
+# Jetson deployments vary by JetPack/DeepStream versions.
+# Keep this minimal and install NVIDIA-provided dependencies via JetPack/DeepStream.
+pyyaml>=6.0
+numpy>=1.24
+opencv-python>=4.8.0

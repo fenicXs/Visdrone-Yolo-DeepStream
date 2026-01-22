@@ -1,0 +1,13 @@
+# Data and training artifacts
+/data/
+/models/
+/runs/
+
+# Large model weights
+*.pt
+
+# Local logs and notes
+structure.txt
+tl.txt
+train_log.txt
+yolov8s_960_tl..txt

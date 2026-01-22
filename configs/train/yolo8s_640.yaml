@@ -1,0 +1,20 @@
+# Baseline training config for VisDrone (YOLOv8s @ 640)
+model: yolov8s.pt
+data: configs/dataset/visdrone.yaml
+
+imgsz: 640
+epochs: 80
+batch: 16
+
+device: 0
+workers: 8
+
+project: runs/visdrone
+name: yolov8s_640
+
+seed: 42
+patience: 20
+
+cache: false
+close_mosaic: 10
+cos_lr: true

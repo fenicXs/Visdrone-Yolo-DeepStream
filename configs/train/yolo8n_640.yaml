@@ -1,0 +1,26 @@
+# Baseline training config for VisDrone (YOLOv8n @ 640)
+model: yolov8n.pt
+data: configs/dataset/visdrone.yaml
+
+imgsz: 640
+epochs: 80
+batch: 16
+
+device: 0          # set to "cpu" or "0,1" as needed
+workers: 8
+
+project: runs/visdrone
+name: yolov8n_640
+
+seed: 42
+patience: 20
+
+# VisDrone has many small objects; if you have GPU memory, try 960 later.
+# imgsz: 960
+
+# Safe defaults; turn on only if you know you have enough RAM.
+cache: false
+
+# Optional (kept here for later tuning; scripts filter unsupported keys by Ultralytics version):
+close_mosaic: 10
+cos_lr: true
