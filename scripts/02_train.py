@@ -255,6 +255,31 @@ def main() -> int:
 
     results = model.train(**train_kwargs)
 
+    # Persist effective training args for reproducibility (and to avoid config mismatches later)
+    try:
+        save_dir = getattr(results, "save_dir", None)
+        if save_dir is None:
+            project = train_kwargs.get("project", "runs")
+            name = train_kwargs.get("name", "exp")
+            save_dir = Path(project) / name
+        save_dir = Path(save_dir)
+        save_dir.mkdir(parents=True, exist_ok=True)
+        (save_dir / "run_config_effective.yaml").write_text(
+            yaml.safe_dump(
+                {
+                    "source_config": str(Path(args.config)),
+                    "model": model_id,
+                    "train_kwargs": train_kwargs,
+                },
+                sort_keys=False,
+                default_flow_style=False,
+            ),
+            encoding="utf-8",
+        )
+        print(f"[OK] Wrote effective config: {save_dir / 'run_config_effective.yaml'}")
+    except Exception as e:
+        print(f"[WARN] Failed to write effective config YAML: {e}")
+
     # Best-effort summary
     save_dir = getattr(results, "save_dir", None)
     if save_dir is None:

@@ -1,0 +1,27 @@
+# VisDrone training config — YOLOv8s @ 960 (small-object friendly)
+# Use this instead of overriding --imgsz on the 640 config (avoids evaluation mistakes).
+
+model: yolov8s.pt
+data: configs/dataset/visdrone.yaml
+
+imgsz: 960
+epochs: 80
+batch: 16
+
+device: 0
+workers: 8
+
+project: runs/visdrone
+name: yolov8s_960
+
+seed: 42
+patience: 20
+
+cache: false
+close_mosaic: 10
+cos_lr: true
+
+# Optional knobs you can try (uncomment one-by-one and compare):
+# max_det: 1000        # VisDrone can be crowded; prevents truncating detections
+# copy_paste: 0.10     # can help small-object diversity
+# mixup: 0.05
