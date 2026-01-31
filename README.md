@@ -15,16 +15,18 @@ This repo is structured as a **deployable object detection pipeline** (not a not
 ## Result preview (short GIF)
 ![Result preview](assets/demo_outputs/preview.gif)
 
-Generate it locally from the annotated MP4:
+Generate it locally from the annotated MP4, then commit `assets/demo_outputs/preview.gif` so it renders on GitHub:
 ```bash
 ffmpeg -y -i assets/demo_outputs/uav0000073_00600_v_ds.mp4 -t 4 -vf "fps=8,scale=960:-1:flags=lanczos" assets/demo_outputs/preview.gif
 ```
 
 ## Confidence presets (from `confidence_compare.txt`)
-| Preset     | conf | NMS IoU |  Prec |   Rec |    F1 |
-| ---------- | ---: | ------: | ----: | ----: | ----: |
-| Balanced   | 0.50 |    0.55 | 0.643 | 0.643 | 0.643 |
-| Clean demo | 0.60 |    0.50 | 0.739 | 0.563 | 0.639 |
+| Preset     | conf | NMS IoU |  Prec |   Rec |    F1 | mAP50 | mAP50-95 |
+| ---------- | ---: | ------: | ----: | ----: | ----: | ----: | -------: |
+| Balanced   | 0.50 |    0.55 | 0.643 | 0.643 | 0.643 |  TBD  |    TBD   |
+| Clean demo | 0.60 |    0.50 | 0.739 | 0.563 | 0.639 |  TBD  |    TBD   |
+
+> mAP values are not computed for these clip-level presets yet; fill them in once you run full-val eval.
 
 ## Repo layout
 - `configs/` dataset/train/export/deepstream configs
