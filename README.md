@@ -1,72 +1,57 @@
-# VisDrone → YOLOv8 → (ONNX/TensorRT) → DeepStream (Jetson) Pipeline
+# VisDrone -> YOLOv8 -> ONNX/TensorRT -> DeepStream Pipeline
 
-This repo is intentionally structured like a *deployable* project, not a notebook dump.
-Phase 1 is **dataset sanity → training → evaluation**. Phase 2 is **export + Jetson/DeepStream**.
+This repo is structured as a **deployable object detection pipeline** (not a notebook dump):
+1) Train YOLOv8 on VisDrone
+2) Export to ONNX
+3) Build TensorRT engine
+4) Run DeepStream inference with overlays
+
+## Current status (what works)
+- YOLOv8 model trained on VisDrone (960 input)
+- ONNX exported for DeepStream
+- TensorRT engine built (FP32)
+- DeepStream app runs and writes annotated output video
+
+## Result preview (short GIF)
+![Result preview](assets/demo_outputs/preview.gif)
+
+Generate it locally from the annotated MP4:
+```bash
+ffmpeg -y -i assets/demo_outputs/uav0000073_00600_v_ds.mp4 -t 4 -vf "fps=8,scale=960:-1:flags=lanczos" assets/demo_outputs/preview.gif
+```
+
+## Confidence presets (from `confidence_compare.txt`)
+| Preset     | conf | NMS IoU |  Prec |   Rec |    F1 |
+| ---------- | ---: | ------: | ----: | ----: | ----: |
+| Balanced   | 0.50 |    0.55 | 0.643 | 0.643 | 0.643 |
+| Clean demo | 0.60 |    0.50 | 0.739 | 0.563 | 0.639 |
 
 ## Repo layout
-See `configs/` for dataset/train/export/deepstream configs and `scripts/` for runnable steps.
+- `configs/` dataset/train/export/deepstream configs
+- `scripts/` runnable steps
+- `assets/` demo inputs/outputs (not committed to git)
 
-## Quickstart (Phase 1: Train + Eval)
+## Deployment quickstart (DeepStream)
+> Run commands from the repo root inside your WSL + Docker setup.
 
-> Run commands from the repo root.
-
-### 1) Create env + install
+1) Build DeepStream-Yolo custom parser/plugin
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -U pip
-pip install -r requirements.txt
+bash scripts/08_deepstream_build.sh
 ```
 
-### 2) Dataset location
-This repo expects VisDrone (YOLO-format) under:
-```
-data/VisDrone/
-  images/train
-  images/val
-  labels/train
-  labels/val
-```
-**Do not commit `data/` to git.**
-
-If your `configs/dataset/visdrone.yaml` contains a `download:` section (Ultralytics style), you can try:
+2) Run DeepStream on the demo video
 ```bash
-python scripts/01_data_download.py
+bash scripts/09_deepstream_run.sh
 ```
 
-### 3) Smoke test (2 epochs) — do this first
-```bash
-python scripts/02_train.py --config configs/train/yolo8n_640.yaml --epochs 2 --batch 4 --name smoke_yolov8n_640
+Output videos are written to:
+```
+assets/demo_outputs/
+  uav0000073_00600_v_ds.mp4
+  uav0000073_00600_v_ds_debug.mp4
+  uav0000073_00600_v_ds_noosd.mp4
 ```
 
-### 4) Full training
-```bash
-python scripts/02_train.py --config configs/train/yolo8n_640.yaml
-```
-
-### 5) Evaluate (validation split)
-After training, your best weights will be at something like:
-```
-runs/visdrone/yolov8n_640/weights/best.pt
-```
-
-Run:
-```bash
-python scripts/03_eval.py --weights runs/visdrone/yolov8n_640/weights/best.pt --train-config configs/train/yolo8n_640.yaml
-```
-
-The eval script prints metrics and also writes a JSON summary to:
-```
-assets/benchmark_tables/
-```
-
-## What to report back (so we can move to Phase 2)
-Paste:
-- mAP50-95, mAP50, precision, recall
-- Your GPU/CPU details (what device you trained on)
-- The path to your run dir (e.g., `runs/visdrone/yolov8n_640/`)
-
-## Notes (don’t ignore these)
-- VisDrone has lots of *small objects*. Higher `imgsz` (e.g., 960) can improve accuracy but costs FPS and memory.
-- If your goal is Jetson deployment, **YOLOv8n or YOLOv8s** is the sane range.
-- If dataset sanity check reports lots of missing label files, your conversion is broken. Fix that before wasting compute.
+## Notes
+- This repo keeps large artifacts out of git (weights, videos, logs).
+- If you want realtime input or RTSP output, update the DeepStream app config.

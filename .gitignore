@@ -11,3 +11,17 @@ structure.txt
 tl.txt
 train_log.txt
 yolov8s_960_tl..txt
+logs.txt
+stage1and2_logs.txt
+predict2_contents.txt
+960_training.txt
+confidence_compare.txt
+
+# Local documents
+Graduate Research Aide Computer Vision Object Detection Model.pdf
+
+# Local media outputs
+*.mp4
+*.avi
+uav0000073_00600_v.txt
+uav0000073_00600_v_1.txt

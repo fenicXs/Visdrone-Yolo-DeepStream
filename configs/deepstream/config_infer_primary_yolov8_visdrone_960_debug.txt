@@ -1,0 +1,34 @@
+# Debug DeepStream nvinfer config for YOLOv8 (VisDrone, 960x960, FP16)
+
+[property]
+gpu-id=0
+net-scale-factor=0.00392156862745098
+model-color-format=0
+onnx-file=/workspace/models/best_ds.onnx
+model-engine-file=/workspace/models/best_ds.onnx_b1_gpu0_fp32.engine
+labelfile-path=/workspace/configs/deepstream/labels_visdrone.txt
+
+batch-size=1
+network-mode=0
+network-type=0
+process-mode=1
+interval=0
+gie-unique-id=1
+num-detected-classes=10
+
+infer-dims=3;960;960
+maintain-aspect-ratio=1
+symmetric-padding=1
+scaling-filter=1
+
+cluster-mode=2
+output-blob-names=output
+
+custom-lib-path=/workspace/third_party/DeepStream-Yolo/nvdsinfer_custom_impl_Yolo/libnvdsinfer_custom_impl_Yolo.so
+parse-bbox-func-name=NvDsInferParseYolo
+# engine-create-func-name=NvDsInferYoloCudaEngineGet
+
+[class-attrs-all]
+pre-cluster-threshold=0.10
+nms-iou-threshold=0.70
+topk=3000

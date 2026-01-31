@@ -1,0 +1,5 @@
+# ONNX export settings for DeepStream (static 960x960)
+imgsz: 960
+opset: 12
+dynamic: false
+simplify: true

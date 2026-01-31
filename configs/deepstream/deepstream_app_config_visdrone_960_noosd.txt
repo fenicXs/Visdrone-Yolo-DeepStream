@@ -1,4 +1,4 @@
-# DeepStream app config: YOLOv8 VisDrone 960 (file in → file out)
+# DeepStream app config: YOLOv8 VisDrone 960 (no OSD, file in → file out)
 
 [application]
 enable-perf-measurement=1
@@ -31,16 +31,10 @@ nvbuf-memory-type=0
 
 [primary-gie]
 enable=1
-config-file=/workspace/configs/deepstream/config_infer_primary_yolov8_visdrone_960.txt
+config-file=/workspace/configs/deepstream/config_infer_primary_yolov8_visdrone_960_debug.txt
 
 [osd]
-enable=1
-display-bbox=1
-display-text=1
-text-size=24
-text-color=1;1;1;1
-font=Sans
-process-mode=0
+enable=0
 
 [sink0]
 enable=1
@@ -48,4 +42,4 @@ type=3
 container=1
 codec=1
 sync=0
-output-file=/workspace/assets/demo_outputs/uav0000073_00600_v_ds.mp4
+output-file=/workspace/assets/demo_outputs/uav0000073_00600_v_ds_noosd.mp4
