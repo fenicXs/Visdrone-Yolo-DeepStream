@@ -23,10 +23,8 @@ python scripts/preview_uav0000297_gif.py
 ## Confidence presets (from `confidence_compare.txt`)
 | Preset     | conf | NMS IoU |  Prec |   Rec |    F1 | mAP50 | mAP50-95 |
 | ---------- | ---: | ------: | ----: | ----: | ----: | ----: | -------: |
-| Balanced   | 0.50 |    0.55 | 0.643 | 0.643 | 0.643 |  TBD  |    TBD   |
-| Clean demo | 0.60 |    0.50 | 0.739 | 0.563 | 0.639 |  TBD  |    TBD   |
-
-> mAP values are not computed for these clip-level presets yet; fill them in once you run full-val eval.
+| Balanced   | 0.50 |    0.55 | 0.643 | 0.643 | 0.643 | 0.482 |    0.285 |
+| Clean demo | 0.60 |    0.50 | 0.739 | 0.563 | 0.639 | 0.482 |    0.285 |
 
 ## Repo layout
 - `configs/` dataset/train/export/deepstream configs
