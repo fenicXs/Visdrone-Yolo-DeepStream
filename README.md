@@ -10,11 +10,32 @@ Re-generate the GIF (cropping black bars, 4 seconds @ 8 FPS):
 python scripts/preview_uav0000297_gif.py
 ```
 
-## Metrics (confidence presets)
-| Preset     | conf | NMS IoU |  Prec |   Rec |    F1 | mAP50 | mAP50-95 |
-| ---------- | ---: | ------: | ----: | ----: | ----: | ----: | -------: |
-| Balanced   | 0.50 |    0.55 | 0.643 | 0.643 | 0.643 | 0.482 |    0.285 |
-| Clean demo | 0.60 |    0.50 | 0.739 | 0.563 | 0.639 | 0.482 |    0.285 |
+## Metrics
+Re-measured on 2026-11-10 from the committed weights (RTX 5070 Laptop GPU). Full tables, commands and hardware are in [assets/benchmark_tables/benchmarks.md](assets/benchmark_tables/benchmarks.md).
+
+### Detection accuracy (VisDrone2019-DET, 80 epochs)
+| Model | Input | Split | Prec | Rec | mAP50 | mAP50-95 |
+| ----- | ----: | ----- | ---: | --: | ----: | -------: |
+| YOLOv8n | 640 | val | 0.419 | 0.316 | 0.309 | 0.174 |
+| YOLOv8n | 960 | val | 0.508 | 0.387 | 0.401 | 0.241 |
+| YOLOv8s | 960 | val | 0.564 | 0.463 | 0.478 | 0.293 |
+| YOLOv8s | 960 | test-dev | 0.522 | 0.397 | 0.389 | 0.231 |
+
+Checkpoints were selected on val, so test-dev is the held out number.
+
+### Single clip, confidence presets (YOLOv8s at 960)
+One VID test-dev clip (`uav0000073_00600_v`, 328 frames, 14,312 boxes), IoU 0.5. This is one clip, not a dataset metric.
+
+| Preset     | conf | NMS IoU |  Prec |   Rec |    F1 |
+| ---------- | ---: | ------: | ----: | ----: | ----: |
+| Balanced   | 0.50 |    0.55 | 0.643 | 0.643 | 0.643 |
+| Clean demo | 0.60 |    0.50 | 0.739 | 0.563 | 0.639 |
+
+### DeepStream throughput (YOLOv8s ONNX, 960 input, batch 1, 1080p H.264, fakesink)
+| Precision | FPS |
+| --------- | --: |
+| FP32 | 131 |
+| FP16 | 302 |
 
 ## Requirements (tested)
 - Windows 11 + WSL2 (Ubuntu 24.04) or native Linux
